@@ -64,13 +64,15 @@ public class JavaFXTemplate extends Application {
      * @param grid
      */
     public void addGrid(GridPane grid) {
-        for (int x = 0; x < 4; x++) {
-            for (int i = 0; i < 4; i++) {
-                Button b = new Button("Button" + (x + i));
+        int counter = 1;
+        for (int x = 0; x < 8; x++) {
+            for (int i = 0; i < 10; i++) {
+                Button b = new Button(Integer.toString(counter));
                 int finalX = x;
                 int finalI = i;
                 b.setOnAction(e -> t1.setText("Hello from button[" + finalX + ", " + finalI + "]"));
-                grid.add(b, x, i);
+                grid.add(b, i, x);
+                counter++;
             }
         }
     }
