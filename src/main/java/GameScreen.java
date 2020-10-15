@@ -40,6 +40,7 @@ public class GameScreen {
         numbers.setAlignment(Pos.CENTER);
         numbers.setHgap(8);
         numbers.setVgap(8);
+        numbers.setDisable(true);
         addGrid(numbers);
 
         VBox content = new VBox(
