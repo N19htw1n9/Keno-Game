@@ -1,3 +1,5 @@
+import Components.MainMenuBar;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -26,12 +28,19 @@ public class GameScreen {
         grid.setAlignment(Pos.CENTER);
         addGrid(grid);
 
+        VBox content = new VBox(
+                20,
+                b1,
+                textBox,
+                grid
+        );
+        content.setPadding(new Insets(0, 20, 0, 20));
+
         this.scene = new Scene(
                 new VBox(
                         20,
-                        b1,
-                        textBox,
-                        grid
+                        MainMenuBar.getMainMenuBar(primaryStage, textBox),
+                        content
                 ),
                 800,
                 800

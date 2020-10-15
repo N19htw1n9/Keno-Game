@@ -1,3 +1,4 @@
+import Components.MainMenuBar;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -14,28 +15,6 @@ public class Welcome extends Application {
         launch(args);
     }
 
-    public MenuBar createMenuBar(Stage primaryStage) {
-        MenuBar menu = new MenuBar();
-
-        Menu mOne = new Menu("Menu");
-        //Menu options need to be implemented to complete Step 1
-        MenuItem iOne = new MenuItem("Display the rules of the game");
-        iOne.setOnAction(e -> textBox.setText("Instructions"));
-        mOne.getItems().add(iOne); //add menu item to first menu
-
-        MenuItem iTwo = new MenuItem("Display the odds of winning");
-        iTwo.setOnAction(e -> textBox.setText("Odds:"));
-        mOne.getItems().add(iTwo); //add menu item to first menu
-
-        MenuItem iThree = new MenuItem("Exit the game");
-        iThree.setOnAction(e -> primaryStage.close());
-        mOne.getItems().add(iThree); //add menu item to first menu
-
-        menu.getMenus().addAll(mOne);
-
-        return menu;
-    }
-
     @Override
     public void start(Stage primaryStage) throws Exception
     {
@@ -49,8 +28,6 @@ public class Welcome extends Application {
 
         textBox = new TextArea();
 
-        MenuBar menu = createMenuBar(primaryStage);
-
         VBox content = new VBox(
                 20,
                 message,
@@ -62,7 +39,7 @@ public class Welcome extends Application {
         Scene welcomeScreen = new Scene(
                 new VBox(
                         20,
-                        menu,
+                        MainMenuBar.getMainMenuBar(primaryStage, textBox),
                         content
                 ),
                 1050,
