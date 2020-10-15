@@ -48,9 +48,6 @@ public class Welcome extends Application {
 
         MenuBar menu = createMenuBar(primaryStage);
 
-        GridPane grid = new GridPane();
-        grid.setAlignment(Pos.CENTER);
-
         Scene welcomeScreen = new Scene(
                 new VBox(
                         20,
