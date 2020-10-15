@@ -1,4 +1,5 @@
 import Components.MainMenuBar;
+import Objects.UserPick;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -11,7 +12,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class GameScreen {
@@ -25,12 +25,19 @@ public class GameScreen {
         createScene();
     }
 
-    public ArrayList<RadioButton> createSpots() {
+    public ArrayList<RadioButton> createSpots(UserPick pick, ToggleGroup spotGroup, GridPane numbers) {
         int[] spotValues = new int[] { 1, 4, 8, 10 };
         ArrayList<RadioButton> spots = new ArrayList<>();
 
-        for (int val : spotValues)
-            spots.add(new RadioButton(Integer.toString(val)));
+        for (int val : spotValues) {
+            RadioButton radioBtn = new RadioButton(Integer.toString(val));
+            radioBtn.setOnMouseClicked(e -> {
+                pick.setSpots(val);
+                numbers.setDisable(false);
+            });
+            spots.add(radioBtn);
+            radioBtn.setToggleGroup(spotGroup);
+        }
         return spots;
     }
 
@@ -49,20 +56,19 @@ public class GameScreen {
                 b1
         );
 
-        ArrayList<RadioButton> spots = createSpots();
+        UserPick pick = new UserPick();
+        ToggleGroup spotGroup = new ToggleGroup();
+        ArrayList<RadioButton> spots = createSpots(pick, spotGroup, numbers);
 
         HBox spotsHolder = new HBox();
-        ToggleGroup spotGroup = new ToggleGroup();
-        for (RadioButton spot : spots) {
-            spot.setToggleGroup(spotGroup);
-            spotsHolder.getChildren().add(spot);
-        }
         spotsHolder.setAlignment(Pos.CENTER);
         spotsHolder.setSpacing(25);
 
-        content.getChildren().add(spotsHolder);
-        content.getChildren().add(numbers);
+        // Add all radio buttons to spotsHolder Horizontal box
+        for (RadioButton spot : spots)
+            spotsHolder.getChildren().add(spot);
 
+        content.getChildren().addAll(spotsHolder, numbers);
         content.setPadding(new Insets(0, 20, 0, 20));
 
         this.scene = new Scene(
