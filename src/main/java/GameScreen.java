@@ -1,3 +1,4 @@
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
@@ -10,8 +11,11 @@ public class GameScreen {
 
     public GameScreen() {
         Button b1 = new Button("You are the game...");
+
         textBox = new TextArea();
+
         GridPane grid = new GridPane();
+        grid.setAlignment(Pos.CENTER);
         addGrid(grid);
 
         this.scene = new Scene(
