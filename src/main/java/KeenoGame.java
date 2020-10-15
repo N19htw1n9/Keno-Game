@@ -6,7 +6,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class KenoWelcomeScreen extends Application {
+public class KeenoGame extends Application {
     private TextArea textBox; //Changed from TextField to TextArea for larger text
 
     public static void main(String[] args)
