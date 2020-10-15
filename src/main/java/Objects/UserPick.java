@@ -14,12 +14,8 @@ public class UserPick {
         this.spots = spots;
     }
 
-    public boolean setNumber(int number) {
-        if (this.numbers.size() <= this.spots) {
-            this.numbers.add(number);
-            return true;
-        }
-        return false;
+    public void setNumber(int number) {
+        this.numbers.add(number);
     }
 
     public void setNumbers(ArrayList<Integer> numbers) {
