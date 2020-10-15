@@ -89,6 +89,7 @@ public class GameScreen {
         for (int x = 0; x < 8; x++) {
             for (int i = 0; i < 10; i++) {
                 Button b = new Button(Integer.toString(counter));
+                b.setMinWidth(50);
                 int finalX = x;
                 int finalI = i;
                 b.setOnAction(e -> textBox.setText("Hello from button[" + finalX + ", " + finalI + "]"));
