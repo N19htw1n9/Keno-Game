@@ -1,8 +1,10 @@
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.scene.text.*;
 
 public class Welcome extends Application {
     private TextArea textBox; //Changed from TextField to TextArea for larger text
@@ -39,6 +41,9 @@ public class Welcome extends Application {
     {
         primaryStage.setTitle("Keno");
 
+        Text message = new Text();
+        message.setText("Welcome to Keno");
+
         Button playGame = new Button("Play game");
         playGame.setOnAction(e -> primaryStage.setScene(new GameScreen(primaryStage).getScene()));
 
@@ -46,12 +51,19 @@ public class Welcome extends Application {
 
         MenuBar menu = createMenuBar(primaryStage);
 
+        VBox content = new VBox(
+                20,
+                message,
+                playGame,
+                textBox //Unsure of how to hide the textbox until a menu item has been selected
+        );
+        content.setPadding(new Insets(0, 20, 0, 20));
+
         Scene welcomeScreen = new Scene(
                 new VBox(
                         20,
                         menu,
-                        playGame,
-                        textBox //Unsure of how to hide the textbox until a menu item has been selected
+                        content
                 ),
                 1050,
                 950
