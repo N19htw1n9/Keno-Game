@@ -14,7 +14,7 @@ public class Welcome extends Application {
         launch(args);
     }
 
-    public MenuBar createMenuBar() {
+    public MenuBar createMenuBar(Stage primaryStage) {
         MenuBar menu = new MenuBar();
 
         Menu mOne = new Menu("Menu");
@@ -28,7 +28,7 @@ public class Welcome extends Application {
         mOne.getItems().add(iTwo); //add menu item to first menu
 
         MenuItem iThree = new MenuItem("Exit the game");
-        iThree.setOnAction(e -> textBox.setText("Exit"));
+        iThree.setOnAction(e -> primaryStage.close());
         mOne.getItems().add(iThree); //add menu item to first menu
 
         menu.getMenus().addAll(mOne);
@@ -46,7 +46,7 @@ public class Welcome extends Application {
 
         textBox = new TextArea();
 
-        MenuBar menu = createMenuBar();
+        MenuBar menu = createMenuBar(primaryStage);
 
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
