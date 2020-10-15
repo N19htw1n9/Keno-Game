@@ -18,21 +18,23 @@ public class GameScreen {
     private Stage primaryStage;
     private Scene scene;
     private TextArea textBox;
+    private UserPick pick;
 
     public GameScreen(Stage primaryStage) {
         this.primaryStage = primaryStage;
+        this.pick = new UserPick();
 
         createScene();
     }
 
-    public ArrayList<RadioButton> createSpots(UserPick pick, ToggleGroup spotGroup, GridPane numbers) {
+    public ArrayList<RadioButton> createSpots(ToggleGroup spotGroup, GridPane numbers) {
         int[] spotValues = new int[] { 1, 4, 8, 10 };
         ArrayList<RadioButton> spots = new ArrayList<>();
 
         for (int val : spotValues) {
             RadioButton radioBtn = new RadioButton(Integer.toString(val));
             radioBtn.setOnMouseClicked(e -> {
-                pick.setSpots(val);
+                this.pick.setSpots(val);
                 numbers.setDisable(false);
             });
             spots.add(radioBtn);
@@ -56,9 +58,8 @@ public class GameScreen {
                 b1
         );
 
-        UserPick pick = new UserPick();
         ToggleGroup spotGroup = new ToggleGroup();
-        ArrayList<RadioButton> spots = createSpots(pick, spotGroup, numbers);
+        ArrayList<RadioButton> spots = createSpots(spotGroup, numbers);
 
         HBox spotsHolder = new HBox();
         spotsHolder.setAlignment(Pos.CENTER);
@@ -87,7 +88,7 @@ public class GameScreen {
     }
 
     /**
-     * Generates a 4x4 grid and adds buttons
+     * Generates a 8x10 grid and adds buttons
      * @param grid
      */
     public void addGrid(GridPane grid) {
@@ -96,9 +97,16 @@ public class GameScreen {
             for (int i = 0; i < 10; i++) {
                 Button b = new Button(Integer.toString(counter));
                 b.setMinWidth(50);
-                int finalX = x;
-                int finalI = i;
-                b.setOnAction(e -> textBox.setText("Hello from button[" + finalX + ", " + finalI + "]"));
+                int finalCounter = counter;
+                b.setOnAction(e -> {
+                    if (this.pick.getNumbers().size() < this.pick.getSpots())
+                        this.pick.setNumber(finalCounter);
+
+                    if (this.pick.getNumbers().size() >= this.pick.getSpots())
+                        grid.setDisable(true);
+
+                    System.out.println(this.pick.getNumbers());
+                });
                 grid.add(b, i, x);
                 counter++;
             }
