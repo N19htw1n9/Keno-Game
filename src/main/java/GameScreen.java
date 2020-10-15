@@ -3,10 +3,15 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 public class GameScreen {
     private Stage primaryStage;
@@ -19,21 +24,40 @@ public class GameScreen {
         createScene();
     }
 
+    public ArrayList<RadioButton> createSpots() {
+        int[] spotValues = new int[] { 1, 4, 8, 10 };
+        ArrayList<RadioButton> spots = new ArrayList<>();
+
+        for (int val : spotValues)
+            spots.add(new RadioButton(Integer.toString(val)));
+        return spots;
+    }
+
     public void createScene() {
         Button b1 = new Button("You are the game...");
 
-        textBox = new TextArea();
-
-        GridPane grid = new GridPane();
-        grid.setAlignment(Pos.CENTER);
-        addGrid(grid);
+        GridPane numbers = new GridPane();
+        numbers.setAlignment(Pos.CENTER);
+        numbers.setHgap(8);
+        numbers.setVgap(8);
+        addGrid(numbers);
 
         VBox content = new VBox(
                 20,
-                b1,
-                textBox,
-                grid
+                b1
         );
+
+        ArrayList<RadioButton> spots = createSpots();
+
+        HBox spotsHolder = new HBox();
+        for (RadioButton spot : spots)
+            spotsHolder.getChildren().add(spot);
+        spotsHolder.setAlignment(Pos.CENTER);
+        spotsHolder.setSpacing(20);
+
+        content.getChildren().add(spotsHolder);
+        content.getChildren().add(numbers);
+
         content.setPadding(new Insets(0, 20, 0, 20));
 
         this.scene = new Scene(
