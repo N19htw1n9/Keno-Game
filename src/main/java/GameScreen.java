@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -51,10 +52,13 @@ public class GameScreen {
         ArrayList<RadioButton> spots = createSpots();
 
         HBox spotsHolder = new HBox();
-        for (RadioButton spot : spots)
+        ToggleGroup spotGroup = new ToggleGroup();
+        for (RadioButton spot : spots) {
+            spot.setToggleGroup(spotGroup);
             spotsHolder.getChildren().add(spot);
+        }
         spotsHolder.setAlignment(Pos.CENTER);
-        spotsHolder.setSpacing(20);
+        spotsHolder.setSpacing(25);
 
         content.getChildren().add(spotsHolder);
         content.getChildren().add(numbers);
