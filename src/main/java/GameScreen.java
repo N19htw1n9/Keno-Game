@@ -4,12 +4,20 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 public class GameScreen {
+    private Stage primaryStage;
     private Scene scene;
     private TextArea textBox;
 
-    public GameScreen() {
+    public GameScreen(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+
+        createScene();
+    }
+
+    public void createScene() {
         Button b1 = new Button("You are the game...");
 
         textBox = new TextArea();

@@ -1,8 +1,6 @@
 import javafx.application.Application;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -42,7 +40,7 @@ public class Welcome extends Application {
         primaryStage.setTitle("Keno");
 
         Button playGame = new Button("Play game");
-        playGame.setOnAction(e -> primaryStage.setScene(new GameScreen().getScene()));
+        playGame.setOnAction(e -> primaryStage.setScene(new GameScreen(primaryStage).getScene()));
 
         textBox = new TextArea();
 
