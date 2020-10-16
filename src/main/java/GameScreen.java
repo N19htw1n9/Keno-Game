@@ -8,8 +8,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.w3c.dom.ranges.Range;
 
 import java.util.ArrayList;
+import java.util.stream.IntStream;
 
 public class GameScreen {
     private Stage primaryStage;
@@ -25,7 +27,8 @@ public class GameScreen {
     }
 
     public ArrayList<RadioButton> createSpots(ToggleGroup spotGroup, GridPane numbers) {
-        int[] spotValues = new int[] { 1, 4, 8, 10 };
+//        int[] spotValues = new int[] { 1, 4, 8, 10 };
+        int[] spotValues = IntStream.range(1, 11).toArray();
         ArrayList<RadioButton> spots = new ArrayList<>();
 
         for (int val : spotValues) {
@@ -45,10 +48,9 @@ public class GameScreen {
 
         GridPane numbers = new GridPane();
         numbers.setAlignment(Pos.CENTER);
-        numbers.setHgap(8);
-        numbers.setVgap(8);
+        numbers.setHgap(15);
+        numbers.setVgap(15);
         numbers.setDisable(true);
-        addGrid(numbers);
 
         VBox content = new VBox(
                 20,
@@ -65,6 +67,8 @@ public class GameScreen {
         // Add all radio buttons to spotsHolder Horizontal box
         for (RadioButton spot : spots)
             spotsHolder.getChildren().add(spot);
+
+        addGrid(numbers, spotsHolder);
 
         content.getChildren().addAll(spotsHolder, numbers);
         content.setPadding(new Insets(0, 20, 0, 20));
@@ -88,15 +92,17 @@ public class GameScreen {
      * Generates a 8x10 grid and adds buttons
      * @param grid
      */
-    public void addGrid(GridPane grid) {
+    public void addGrid(GridPane grid, HBox spotsHolder) {
         int counter = 1;
         for (int x = 0; x < 8; x++) {
             for (int i = 0; i < 10; i++) {
                 CheckBox cb = new CheckBox(Integer.toString(counter));
                 final int finalCounter = counter;
                 cb.setOnAction(e -> {
-                    if (cb.isSelected() && this.pick.getNumbers().size() < this.pick.getSpots())
+                    if (cb.isSelected() && this.pick.getNumbers().size() < this.pick.getSpots()) {
                         this.pick.setNumber(finalCounter);
+                        spotsHolder.setDisable(true);
+                    }
 
                     if (!cb.isSelected())
                         this.pick.getNumbers().removeIf(elem -> elem == finalCounter);
