@@ -1,7 +1,5 @@
 import Components.MainMenuBar;
 import Objects.UserPick;
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import javafx.beans.property.BooleanProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
