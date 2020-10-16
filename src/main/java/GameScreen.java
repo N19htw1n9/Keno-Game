@@ -1,12 +1,11 @@
 import Components.MainMenuBar;
 import Objects.UserPick;
+import com.sun.org.apache.xpath.internal.operations.Bool;
+import javafx.beans.property.BooleanProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -95,19 +94,23 @@ public class GameScreen {
         int counter = 1;
         for (int x = 0; x < 8; x++) {
             for (int i = 0; i < 10; i++) {
-                Button b = new Button(Integer.toString(counter));
-                b.setMinWidth(50);
-                int finalCounter = counter;
-                b.setOnAction(e -> {
-                    if (this.pick.getNumbers().size() < this.pick.getSpots())
+                CheckBox cb = new CheckBox(Integer.toString(counter));
+                final int finalCounter = counter;
+                cb.setOnAction(e -> {
+                    if (cb.isSelected() && this.pick.getNumbers().size() < this.pick.getSpots())
                         this.pick.setNumber(finalCounter);
+
+                    if (!cb.isSelected())
+                        this.pick.getNumbers().removeIf(elem -> elem == finalCounter);
 
                     if (this.pick.getNumbers().size() >= this.pick.getSpots())
                         grid.setDisable(true);
 
+                    // TODO: Remove once function is completed
                     System.out.println(this.pick.getNumbers());
                 });
-                grid.add(b, i, x);
+
+                grid.add(cb, i, x);
                 counter++;
             }
         }
