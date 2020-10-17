@@ -66,7 +66,8 @@ public class GameScreen {
         for (RadioButton spot : spots)
             spotsHolder.getChildren().add(spot);
 
-        Button drawBtn = getDrawBtn();
+        Text drawStatus = new Text();
+        Button drawBtn = getDrawBtn(drawStatus);
         drawBtn.setDisable(true);
 
         addGrid(numbers, spotsHolder, drawBtn);
@@ -76,7 +77,8 @@ public class GameScreen {
                 gameText,
                 spotsHolder,
                 numbers,
-                drawBtn
+                drawBtn,
+                drawStatus
         );
         content.setPadding(new Insets(0, 20, 0, 20));
 
@@ -91,7 +93,7 @@ public class GameScreen {
         );
     }
 
-    public Button getDrawBtn() {
+    public Button getDrawBtn(Text showDrawStatus) {
         Button drawBtn = new Button("Draw");
         drawBtn.setOnAction(e -> {
             DrawRandom dr = new DrawRandom(80, 20, 1);
@@ -103,12 +105,11 @@ public class GameScreen {
             int matched = 0;
             ArrayList<Integer> userPick = this.pick.getNumbers();
             for (int pick : userPick) {
-                if (draws.contains(pick)) {
-                    System.out.printf("%d matched!\n", pick);
+                if (draws.contains(pick))
                     matched++;
-                }
             }
-            System.out.printf("%d numbers were matched!", matched);
+            showDrawStatus.setStyle("color: red");
+            showDrawStatus.setText(Integer.toString(matched) + " were matched!");
         });
         return drawBtn;
     }
