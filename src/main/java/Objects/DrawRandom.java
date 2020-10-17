@@ -22,13 +22,14 @@ public class DrawRandom {
 
     public TreeSet<Integer> draw() {
         TreeSet<Integer> randomValues = new TreeSet<>();
-        Random rand = new Random();
 
         final int min = 1;
         final int param = (this.max - min) + 1;
 
-        for (int i = 0; i < this.draws; i++)
+        for (int i = 0; i < this.draws; i++) {
+            Random rand = new Random();
             while (!randomValues.add(rand.nextInt(param) + min));
+        }
         return randomValues;
     }
 
