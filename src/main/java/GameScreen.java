@@ -1,4 +1,5 @@
 import Components.MainMenuBar;
+import Objects.DrawRandom;
 import Objects.UserPick;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -8,9 +9,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import org.w3c.dom.ranges.Range;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.TreeSet;
 import java.util.stream.IntStream;
 
 public class GameScreen {
@@ -70,7 +72,15 @@ public class GameScreen {
 
         addGrid(numbers, spotsHolder);
 
-        content.getChildren().addAll(spotsHolder, numbers);
+        Button drawBtn = new Button("Draw");
+        drawBtn.setOnAction(e -> {
+            DrawRandom dr = new DrawRandom(80, 20, 1);
+            TreeSet<Integer> draws = dr.draw();
+
+            System.out.println(draws.toString());
+        });
+
+        content.getChildren().addAll(spotsHolder, numbers, drawBtn);
         content.setPadding(new Insets(0, 20, 0, 20));
 
         this.scene = new Scene(
