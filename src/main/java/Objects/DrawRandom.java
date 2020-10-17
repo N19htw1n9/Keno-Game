@@ -20,7 +20,7 @@ public class DrawRandom {
         this.numDraws = numDraws;
     }
 
-    public Object[] draw() {
+    public TreeSet<Integer> draw() {
         TreeSet<Integer> randomValues = new TreeSet<>();
         Random rand = new Random();
 
@@ -29,14 +29,7 @@ public class DrawRandom {
 
         for (int i = 0; i < this.draws; i++)
             while (!randomValues.add(rand.nextInt(param) + min));
-        return randomValues.stream().toArray();
-    }
-
-    public Object[][] genDraws() {
-        Object[][] allDraws = new Object[this.numDraws][this.draws+1];
-        for (int i = 0; i < this.numDraws; i++)
-            allDraws[i] = this.draw();
-        return allDraws;
+        return randomValues;
     }
 
     public int getMax() {
