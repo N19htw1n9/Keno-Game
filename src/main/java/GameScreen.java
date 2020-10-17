@@ -8,10 +8,10 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.TreeSet;
 import java.util.stream.IntStream;
 
@@ -46,18 +46,14 @@ public class GameScreen {
     }
 
     public void createScene() {
-        Button b1 = new Button("You are the game...");
+        Text gameText = new Text("Start playing");
 
+        // Create grid
         GridPane numbers = new GridPane();
         numbers.setAlignment(Pos.CENTER);
         numbers.setHgap(15);
         numbers.setVgap(15);
         numbers.setDisable(true);
-
-        VBox content = new VBox(
-                20,
-                b1
-        );
 
         ToggleGroup spotGroup = new ToggleGroup();
         ArrayList<RadioButton> spots = createSpots(spotGroup, numbers);
@@ -70,17 +66,18 @@ public class GameScreen {
         for (RadioButton spot : spots)
             spotsHolder.getChildren().add(spot);
 
-        addGrid(numbers, spotsHolder);
+        Button drawBtn = getDrawBtn();
+        drawBtn.setDisable(true);
 
-        Button drawBtn = new Button("Draw");
-        drawBtn.setOnAction(e -> {
-            DrawRandom dr = new DrawRandom(80, 20, 1);
-            TreeSet<Integer> draws = dr.draw();
+        addGrid(numbers, spotsHolder, drawBtn);
 
-            System.out.println(draws.toString());
-        });
-
-        content.getChildren().addAll(spotsHolder, numbers, drawBtn);
+        VBox content = new VBox(
+                20,
+                gameText,
+                spotsHolder,
+                numbers,
+                drawBtn
+        );
         content.setPadding(new Insets(0, 20, 0, 20));
 
         this.scene = new Scene(
@@ -94,15 +91,33 @@ public class GameScreen {
         );
     }
 
-    public Scene getScene() {
-        return this.scene;
+    public Button getDrawBtn() {
+        Button drawBtn = new Button("Draw");
+        drawBtn.setOnAction(e -> {
+            DrawRandom dr = new DrawRandom(80, 20, 1);
+            TreeSet<Integer> draws = dr.draw();
+
+            System.out.println("\nComputer is drawing....");
+            System.out.println(draws.toString());
+
+            int matched = 0;
+            ArrayList<Integer> userPick = this.pick.getNumbers();
+            for (int pick : userPick) {
+                if (draws.contains(pick)) {
+                    System.out.printf("%d matched!\n", pick);
+                    matched++;
+                }
+            }
+            System.out.printf("%d numbers were matched!", matched);
+        });
+        return drawBtn;
     }
 
     /**
      * Generates a 8x10 grid and adds buttons
      * @param grid
      */
-    public void addGrid(GridPane grid, HBox spotsHolder) {
+    public void addGrid(GridPane grid, HBox spotsHolder, Button drawBtn) {
         int counter = 1;
         for (int x = 0; x < 8; x++) {
             for (int i = 0; i < 10; i++) {
@@ -117,16 +132,19 @@ public class GameScreen {
                     if (!cb.isSelected())
                         this.pick.getNumbers().removeIf(elem -> elem == finalCounter);
 
-                    if (this.pick.getNumbers().size() >= this.pick.getSpots())
+                    if (this.pick.getNumbers().size() >= this.pick.getSpots()) {
                         grid.setDisable(true);
-
-                    // TODO: Remove once function is completed
-                    System.out.println(this.pick.getNumbers());
+                        drawBtn.setDisable(false);
+                    }
                 });
 
                 grid.add(cb, i, x);
                 counter++;
             }
         }
+    }
+
+    public Scene getScene() {
+        return this.scene;
     }
 }
