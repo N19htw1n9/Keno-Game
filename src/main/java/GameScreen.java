@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -18,12 +19,14 @@ import java.util.stream.IntStream;
 public class GameScreen {
     private Stage primaryStage;
     private Scene scene;
+    private VBox content;
     private TextArea textBox;
     private UserPick pick;
 
     public GameScreen(Stage primaryStage) {
         this.primaryStage = primaryStage;
         this.pick = new UserPick();
+        this.content = new VBox();
 
         createScene();
     }
@@ -46,6 +49,22 @@ public class GameScreen {
     }
 
     public void createScene() {
+        this.createContentVBox();
+
+        this.scene = new Scene(
+                new VBox(
+                        20,
+                        MainMenuBar.getMainMenuBar(primaryStage, textBox),
+                        this.content
+                ),
+                800,
+                800
+        );
+    }
+
+    public void createContentVBox() {
+        this.content = new VBox(20);
+
         Text gameText = new Text("Start playing");
 
         // Create grid
@@ -56,7 +75,7 @@ public class GameScreen {
         numbers.setDisable(true);
 
         ToggleGroup spotGroup = new ToggleGroup();
-        ArrayList<RadioButton> spots = createSpots(spotGroup, numbers);
+        ArrayList<RadioButton> spots = this.createSpots(spotGroup, numbers);
 
         HBox spotsHolder = new HBox();
         spotsHolder.setAlignment(Pos.CENTER);
@@ -67,35 +86,27 @@ public class GameScreen {
             spotsHolder.getChildren().add(spot);
 
         Text drawStatus = new Text();
-        Button drawBtn = getDrawBtn(drawStatus);
+        Button drawBtn = this.getDrawBtn(drawStatus);
         drawBtn.setDisable(true);
 
-        addGrid(numbers, spotsHolder, drawBtn);
+        this.addGrid(numbers, spotsHolder, drawBtn);
 
-        VBox content = new VBox(
-                20,
+        // Add children
+        this.content.getChildren().addAll(
                 gameText,
                 spotsHolder,
                 numbers,
                 drawBtn,
                 drawStatus
         );
-        content.setPadding(new Insets(0, 20, 0, 20));
-
-        this.scene = new Scene(
-                new VBox(
-                        20,
-                        MainMenuBar.getMainMenuBar(primaryStage, textBox),
-                        content
-                ),
-                800,
-                800
-        );
+        this.content.setPadding(new Insets(0, 20, 0, 20));
     }
 
     public Button getDrawBtn(Text showDrawStatus) {
         Button drawBtn = new Button("Draw");
         drawBtn.setOnAction(e -> {
+            drawBtn.setDisable(true);
+
             DrawRandom dr = new DrawRandom(80, 20, 1);
             TreeSet<Integer> draws = dr.draw();
 
@@ -108,10 +119,22 @@ public class GameScreen {
                 if (draws.contains(pick))
                     matched++;
             }
-            showDrawStatus.setStyle("color: red");
+            showDrawStatus.setFill(Color.rgb(212, 62, 62));
             showDrawStatus.setText(Integer.toString(matched) + " were matched!");
+            renderPlayAgainBtn();
         });
         return drawBtn;
+    }
+
+    public void renderPlayAgainBtn() {
+        Button playAgain = new Button("Play again");
+        playAgain.setOnAction(e -> {
+            this.pick = new UserPick();
+            this.createScene();
+            this.primaryStage.setScene(this.scene);
+        });
+
+        this.content.getChildren().add(playAgain);
     }
 
     /**
