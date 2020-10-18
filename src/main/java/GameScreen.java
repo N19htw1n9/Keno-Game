@@ -63,7 +63,8 @@ public class GameScreen {
         return matches;
     }
 
-    public ArrayList<RadioButton> createSpotsButtons(ToggleGroup spotButtonsGroup, GridPane numbers) {
+    public ArrayList<RadioButton> createSpotsButtons(ToggleGroup spotButtonsGroup, GridPane numbers,
+            Button quickPickButton) {
         int[] spotValues = IntStream.range(1, 11).toArray();
         ArrayList<RadioButton> spots = new ArrayList<>();
 
@@ -72,6 +73,7 @@ public class GameScreen {
             radioBtn.setOnMouseClicked(e -> {
                 this.pick.setSpots(val);
                 numbers.setDisable(false);
+                quickPickButton.setDisable(false);
             });
             spots.add(radioBtn);
             radioBtn.setToggleGroup(spotButtonsGroup);
@@ -91,9 +93,12 @@ public class GameScreen {
         numbers.setVgap(15);
         numbers.setDisable(true);
 
+        Button quickPickButton = new Button("Quick Pick!");
+        quickPickButton.setDisable(true);
+
         // Spot buttons
         ToggleGroup spotButtonsGroup = new ToggleGroup();
-        ArrayList<RadioButton> spotButtons = this.createSpotsButtons(spotButtonsGroup, numbers);
+        ArrayList<RadioButton> spotButtons = this.createSpotsButtons(spotButtonsGroup, numbers, quickPickButton);
 
         HBox spotButtonsHolder = new HBox();
         spotButtonsHolder.setAlignment(Pos.CENTER);
@@ -123,6 +128,9 @@ public class GameScreen {
 
         this.addGrid(numbers, spotButtonsHolder, drawBtn);
 
+        createQuickPickButton(quickPickButton, spotButtonsHolder, numbers, drawBtn);
+        quickPickButton.setDisable(true);
+
         // Add children
         this.content.getChildren().addAll(
                 this.textBox,
@@ -130,10 +138,33 @@ public class GameScreen {
                 matchButtonsHolder,
                 spotButtonsHolder,
                 numbers,
+                quickPickButton,
                 drawBtn,
                 drawStatus
         );
         this.content.setPadding(new Insets(0, 20, 0, 20));
+    }
+
+    public void createQuickPickButton(Button quickPickButton, HBox spotButtonsHolder, GridPane numbers,
+            Button drawBtn) {
+        quickPickButton.setOnAction(e -> {
+            pick.randomPick();
+            ArrayList<Integer> userPicks = pick.getNumbers();
+
+            int counter = 1;
+            for (int i = 0; i < 8; i++) {
+                for (int j = 0; j < 10; j++) {
+                    if (userPicks.contains(counter)) {
+                        CheckBox newCB = createNumbersCheckbox(counter, spotButtonsHolder, numbers, drawBtn);
+                        newCB.setSelected(true);
+
+                        numbers.add(newCB, j, i);
+                    }
+                    counter++;
+                }
+            }
+            drawBtn.setDisable(false);
+        });
     }
 
     public void getDrawBtn(Text showDrawStatus, HBox spotButtonsHolder, GridPane numbers, Button drawBtn) {
