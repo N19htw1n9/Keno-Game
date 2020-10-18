@@ -143,19 +143,24 @@ public class GameScreen {
             DrawRandom dr = new DrawRandom(80, 20, 1);
             TreeSet<Integer> draws = dr.draw();
 
+            ArrayList<Integer> userPicks = this.pick.getNumbers();
+            ArrayList<Integer> wonPicks = new ArrayList<>();
+            for (int pick : userPicks) {
+                if (draws.contains(pick))
+                    wonPicks.add(pick);
+            }
+            showDrawStatus.setFill(Color.rgb(212, 62, 62));
+            showDrawStatus.setText(Integer.toString(wonPicks.size()) + " won!");
+            renderPlayAgainBtn();
+
+            System.out.println("\nUser picked:");
+            System.out.println(userPicks);
+
             System.out.println("\nComputer is drawing....");
             System.out.println(draws.toString());
 
-            int matched = 0;
-            ArrayList<Integer> userPick = this.pick.getNumbers();
-            for (int pick : userPick) {
-                if (draws.contains(pick))
-                    matched++;
-            }
-            showDrawStatus.setFill(Color.rgb(212, 62, 62));
-            showDrawStatus.setText(Integer.toString(matched) + " were matched!");
-            renderPlayAgainBtn();
-
+            System.out.println("\nPicks won:");
+            System.out.println(wonPicks.toString());
 
             // Render draw animation
             int counter = 1;
