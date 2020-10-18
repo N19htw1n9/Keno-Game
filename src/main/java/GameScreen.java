@@ -22,6 +22,7 @@ public class GameScreen {
     private VBox content;
     private TextArea textBox;
     private UserPick pick;
+    private int matches;
 
     public GameScreen(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -29,23 +30,6 @@ public class GameScreen {
         this.content = new VBox();
 
         createScene();
-    }
-
-    public ArrayList<RadioButton> createSpots(ToggleGroup spotGroup, GridPane numbers) {
-//        int[] spotValues = new int[] { 1, 4, 8, 10 };
-        int[] spotValues = IntStream.range(1, 11).toArray();
-        ArrayList<RadioButton> spots = new ArrayList<>();
-
-        for (int val : spotValues) {
-            RadioButton radioBtn = new RadioButton(Integer.toString(val));
-            radioBtn.setOnMouseClicked(e -> {
-                this.pick.setSpots(val);
-                numbers.setDisable(false);
-            });
-            spots.add(radioBtn);
-            radioBtn.setToggleGroup(spotGroup);
-        }
-        return spots;
     }
 
     public void createScene() {
@@ -62,6 +46,38 @@ public class GameScreen {
         );
     }
 
+    public ArrayList<RadioButton> createMatchButtons(ToggleGroup matchButtonsGroup, HBox spotButtonsHolder) {
+        int[] spotValues = IntStream.range(1, 5).toArray();
+        ArrayList<RadioButton> matches = new ArrayList<>();
+
+        for (int val : spotValues) {
+            RadioButton radioBtn = new RadioButton(Integer.toString(val));
+            radioBtn.setOnMouseClicked(e -> {
+                spotButtonsHolder.setDisable(false);
+                this.matches = val;
+            });
+            matches.add(radioBtn);
+            radioBtn.setToggleGroup(matchButtonsGroup);
+        }
+        return matches;
+    }
+
+    public ArrayList<RadioButton> createSpotsButtons(ToggleGroup spotButtonsGroup, GridPane numbers) {
+        int[] spotValues = IntStream.range(1, 11).toArray();
+        ArrayList<RadioButton> spots = new ArrayList<>();
+
+        for (int val : spotValues) {
+            RadioButton radioBtn = new RadioButton(Integer.toString(val));
+            radioBtn.setOnMouseClicked(e -> {
+                this.pick.setSpots(val);
+                numbers.setDisable(false);
+            });
+            spots.add(radioBtn);
+            radioBtn.setToggleGroup(spotButtonsGroup);
+        }
+        return spots;
+    }
+
     public void createContentVBox() {
         this.content = new VBox(20);
 
@@ -74,27 +90,42 @@ public class GameScreen {
         numbers.setVgap(15);
         numbers.setDisable(true);
 
-        ToggleGroup spotGroup = new ToggleGroup();
-        ArrayList<RadioButton> spots = this.createSpots(spotGroup, numbers);
+        // Spot buttons
+        ToggleGroup spotButtonsGroup = new ToggleGroup();
+        ArrayList<RadioButton> spotButtons = this.createSpotsButtons(spotButtonsGroup, numbers);
 
-        HBox spotsHolder = new HBox();
-        spotsHolder.setAlignment(Pos.CENTER);
-        spotsHolder.setSpacing(25);
+        HBox spotButtonsHolder = new HBox();
+        spotButtonsHolder.setAlignment(Pos.CENTER);
+        spotButtonsHolder.setSpacing(25);
+        spotButtonsHolder.setDisable(true);
 
-        // Add all radio buttons to spotsHolder Horizontal box
-        for (RadioButton spot : spots)
-            spotsHolder.getChildren().add(spot);
+        // Add all spot buttons to spotsHolder Horizontal box
+        for (RadioButton spot : spotButtons)
+            spotButtonsHolder.getChildren().add(spot);
+
+        // Match buttons
+        ToggleGroup matchButtonGroup = new ToggleGroup();
+        ArrayList<RadioButton> matchButtons = this.createMatchButtons(matchButtonGroup, spotButtonsHolder);
+
+        HBox matchButtonsHolder = new HBox();
+        matchButtonsHolder.setAlignment(Pos.CENTER);
+        matchButtonsHolder.setSpacing(25);
+
+        // Add all match buttons to matchButtonHolder Horizontal box
+        for (RadioButton matchButton : matchButtons)
+            matchButtonsHolder.getChildren().add(matchButton);
 
         Text drawStatus = new Text();
         Button drawBtn = this.getDrawBtn(drawStatus);
         drawBtn.setDisable(true);
 
-        this.addGrid(numbers, spotsHolder, drawBtn);
+        this.addGrid(numbers, spotButtonsHolder, drawBtn);
 
         // Add children
         this.content.getChildren().addAll(
                 gameText,
-                spotsHolder,
+                matchButtonsHolder,
+                spotButtonsHolder,
                 numbers,
                 drawBtn,
                 drawStatus
