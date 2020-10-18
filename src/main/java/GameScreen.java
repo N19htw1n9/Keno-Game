@@ -28,6 +28,7 @@ public class GameScreen {
         this.primaryStage = primaryStage;
         this.pick = new UserPick();
         this.content = new VBox();
+        this.textBox = new TextArea();
 
         createScene();
     }
@@ -38,7 +39,7 @@ public class GameScreen {
         this.scene = new Scene(
                 new VBox(
                         20,
-                        MainMenuBar.getMainMenuBar(primaryStage, textBox),
+                        MainMenuBar.getMainMenuBar(this.primaryStage, this.textBox),
                         this.content
                 ),
                 800,
@@ -123,6 +124,7 @@ public class GameScreen {
 
         // Add children
         this.content.getChildren().addAll(
+                this.textBox,
                 gameText,
                 matchButtonsHolder,
                 spotButtonsHolder,
