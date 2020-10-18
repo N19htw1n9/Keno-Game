@@ -117,7 +117,8 @@ public class GameScreen {
             matchButtonsHolder.getChildren().add(matchButton);
 
         Text drawStatus = new Text();
-        Button drawBtn = this.getDrawBtn(drawStatus);
+        Button drawBtn = new Button("Draw");
+        this.getDrawBtn(drawStatus, spotButtonsHolder, numbers, drawBtn);
         drawBtn.setDisable(true);
 
         this.addGrid(numbers, spotButtonsHolder, drawBtn);
@@ -135,8 +136,7 @@ public class GameScreen {
         this.content.setPadding(new Insets(0, 20, 0, 20));
     }
 
-    public Button getDrawBtn(Text showDrawStatus) {
-        Button drawBtn = new Button("Draw");
+    public void getDrawBtn(Text showDrawStatus, HBox spotButtonsHolder, GridPane numbers, Button drawBtn) {
         drawBtn.setOnAction(e -> {
             drawBtn.setDisable(true);
 
@@ -155,8 +155,23 @@ public class GameScreen {
             showDrawStatus.setFill(Color.rgb(212, 62, 62));
             showDrawStatus.setText(Integer.toString(matched) + " were matched!");
             renderPlayAgainBtn();
+
+
+            // Render draw animation
+            int counter = 1;
+            numbers.setDisable(false);
+            for (int i = 0; i < 8; i++) {
+                for (int j = 0; j < 10; j++) {
+                    if (draws.contains(counter)) {
+                        CheckBox newCB = createNumbersCheckbox(counter, spotButtonsHolder, numbers, drawBtn);
+                        newCB.setSelected(true);
+
+                        numbers.add(newCB, j, i);
+                    }
+                    counter++;
+                }
+            }
         });
-        return drawBtn;
     }
 
     public void renderPlayAgainBtn() {
@@ -170,30 +185,36 @@ public class GameScreen {
         this.content.getChildren().add(playAgain);
     }
 
+    public CheckBox createNumbersCheckbox(final int counter, HBox spotButtonsHolder, GridPane grid, Button drawBtn) {
+        CheckBox cb = new CheckBox(Integer.toString(counter));
+        cb.setId(Integer.toString(counter));
+        cb.setOnAction(e -> {
+            if (cb.isSelected() && this.pick.getNumbers().size() < this.pick.getSpots()) {
+                this.pick.setNumber(counter);
+                spotButtonsHolder.setDisable(true);
+            }
+
+            if (!cb.isSelected())
+                this.pick.getNumbers().removeIf(elem -> elem == counter);
+
+            if (this.pick.getNumbers().size() >= this.pick.getSpots()) {
+                grid.setDisable(true);
+                spotButtonsHolder.setDisable(false);
+                drawBtn.setDisable(false);
+            }
+        });
+        return cb;
+    }
+
     /**
      * Generates a 8x10 grid and adds buttons
      * @param grid
      */
-    public void addGrid(GridPane grid, HBox spotsHolder, Button drawBtn) {
+    public void addGrid(GridPane grid, HBox spotButtonsHolder, Button drawBtn) {
         int counter = 1;
         for (int x = 0; x < 8; x++) {
             for (int i = 0; i < 10; i++) {
-                CheckBox cb = new CheckBox(Integer.toString(counter));
-                final int finalCounter = counter;
-                cb.setOnAction(e -> {
-                    if (cb.isSelected() && this.pick.getNumbers().size() < this.pick.getSpots()) {
-                        this.pick.setNumber(finalCounter);
-                        spotsHolder.setDisable(true);
-                    }
-
-                    if (!cb.isSelected())
-                        this.pick.getNumbers().removeIf(elem -> elem == finalCounter);
-
-                    if (this.pick.getNumbers().size() >= this.pick.getSpots()) {
-                        grid.setDisable(true);
-                        drawBtn.setDisable(false);
-                    }
-                });
+                CheckBox cb = createNumbersCheckbox(counter, spotButtonsHolder, grid, drawBtn);
 
                 grid.add(cb, i, x);
                 counter++;
