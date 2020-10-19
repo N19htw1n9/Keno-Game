@@ -1,8 +1,5 @@
 package Components;
 
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -12,7 +9,6 @@ import javafx.stage.Stage;
 import javafx.scene.text.*;
 import javafx.scene.paint.Color;
 
-import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
