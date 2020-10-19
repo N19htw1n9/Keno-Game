@@ -80,8 +80,6 @@ public class GameScreen {
     public void createContentVBox() {
         this.content = new VBox(20);
 
-        Text gameText = new Text("Start playing");
-
         // Create grid
         GridPane numbers = new GridPane();
         numbers.setHgap(15);
@@ -125,12 +123,12 @@ public class GameScreen {
         quickPickButton.setDisable(true);
 
         // Add children
-        this.content.getChildren().addAll(this.text, gameText,
-                new Text("\n\n1. How many consecutive draws do you want to play?"), matchButtonsHolder,
+        this.content.getChildren().addAll(this.text, new Text("1. How many consecutive draws do you want to play?"),
+                matchButtonsHolder,
                 new Text("\n2. How many numbers (spots) do you want to play?"), spotButtonsHolder,
                 new Text("\n3. Pick your own numbers, OR select with Quick Pick."), numbers, quickPickButton, drawBtn,
                 drawStatus);
-        this.content.setPadding(new Insets(0, 20, 0, 20));
+        this.content.setPadding(new Insets(0, 20, 20, 20));
     }
 
     public void createQuickPickButton(HBox spotButtonsHolder, GridPane numbers, Button drawBtn) {
