@@ -176,8 +176,7 @@ public class GameScreen {
                     if (inDraws && inUserPicks) {
                         CheckBox newCB = createNumbersCheckbox(counter, spotButtonsHolder, numbers, drawBtn);
                         newCB.setSelected(true);
-                        newCB.setTextFill(Color.GREEN);
-                        newCB.setStyle("selected-box-color: lime; box-color: red; mark-color: blue;");
+                        newCB.setTextFill(Color.BLUE);
 
                         numbers.add(newCB, j, i);
                         wonPicks.add(counter);
