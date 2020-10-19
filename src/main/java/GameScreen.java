@@ -23,6 +23,7 @@ public class GameScreen {
     private TextArea textBox;
     private UserPick pick;
     private int matches;
+    private Button quickPickButton;
 
     public GameScreen(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -93,7 +94,7 @@ public class GameScreen {
         numbers.setVgap(15);
         numbers.setDisable(true);
 
-        Button quickPickButton = new Button("Quick Pick!");
+        quickPickButton = new Button("Quick Pick!");
         quickPickButton.setDisable(true);
 
         // Spot buttons
@@ -128,7 +129,7 @@ public class GameScreen {
 
         this.addGrid(numbers, spotButtonsHolder, drawBtn);
 
-        createQuickPickButton(quickPickButton, spotButtonsHolder, numbers, drawBtn);
+        createQuickPickButton(spotButtonsHolder, numbers, drawBtn);
         quickPickButton.setDisable(true);
 
         // Add children
@@ -145,7 +146,7 @@ public class GameScreen {
         this.content.setPadding(new Insets(0, 20, 0, 20));
     }
 
-    public void createQuickPickButton(Button quickPickButton, HBox spotButtonsHolder, GridPane numbers,
+    public void createQuickPickButton(HBox spotButtonsHolder, GridPane numbers,
             Button drawBtn) {
         quickPickButton.setOnAction(e -> {
             pick.randomPick();
@@ -163,6 +164,8 @@ public class GameScreen {
                     counter++;
                 }
             }
+            numbers.setDisable(true);
+            quickPickButton.setDisable(true);
             drawBtn.setDisable(false);
         });
     }
@@ -235,6 +238,7 @@ public class GameScreen {
 
             if (this.pick.getNumbers().size() >= this.pick.getSpots()) {
                 grid.setDisable(true);
+                quickPickButton.setDisable(true);
                 spotButtonsHolder.setDisable(false);
                 drawBtn.setDisable(false);
             }
