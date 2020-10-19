@@ -24,6 +24,7 @@ public class GameScreen {
     private Text text;
     private UserPick pick;
     private int matches;
+    private Button quickPickButton;
 
     public GameScreen(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -64,7 +65,8 @@ public class GameScreen {
         return matches;
     }
 
-    public ArrayList<RadioButton> createSpotsButtons(ToggleGroup spotButtonsGroup, GridPane numbers) {
+    public ArrayList<RadioButton> createSpotsButtons(ToggleGroup spotButtonsGroup, GridPane numbers,
+            Button quickPickButton) {
         int[] spotValues = IntStream.range(1, 11).toArray();
         ArrayList<RadioButton> spots = new ArrayList<>();
 
@@ -73,6 +75,7 @@ public class GameScreen {
             radioBtn.setOnMouseClicked(e -> {
                 this.pick.setSpots(val);
                 numbers.setDisable(false);
+                quickPickButton.setDisable(false);
             });
             spots.add(radioBtn);
             radioBtn.setToggleGroup(spotButtonsGroup);
@@ -92,9 +95,12 @@ public class GameScreen {
         numbers.setVgap(15);
         numbers.setDisable(true);
 
+        quickPickButton = new Button("Quick Pick!");
+        quickPickButton.setDisable(true);
+
         // Spot buttons
         ToggleGroup spotButtonsGroup = new ToggleGroup();
-        ArrayList<RadioButton> spotButtons = this.createSpotsButtons(spotButtonsGroup, numbers);
+        ArrayList<RadioButton> spotButtons = this.createSpotsButtons(spotButtonsGroup, numbers, quickPickButton);
 
         HBox spotButtonsHolder = new HBox();
         spotButtonsHolder.setAlignment(Pos.CENTER);
@@ -124,6 +130,9 @@ public class GameScreen {
 
         this.addGrid(numbers, spotButtonsHolder, drawBtn);
 
+        createQuickPickButton(spotButtonsHolder, numbers, drawBtn);
+        quickPickButton.setDisable(true);
+
         // Add children
         this.content.getChildren().addAll(
                 this.text,
@@ -131,10 +140,35 @@ public class GameScreen {
                 matchButtonsHolder,
                 spotButtonsHolder,
                 numbers,
+                quickPickButton,
                 drawBtn,
                 drawStatus
         );
         this.content.setPadding(new Insets(0, 20, 0, 20));
+    }
+
+    public void createQuickPickButton(HBox spotButtonsHolder, GridPane numbers,
+            Button drawBtn) {
+        quickPickButton.setOnAction(e -> {
+            pick.randomPick();
+            ArrayList<Integer> userPicks = pick.getNumbers();
+
+            int counter = 1;
+            for (int i = 0; i < 8; i++) {
+                for (int j = 0; j < 10; j++) {
+                    if (userPicks.contains(counter)) {
+                        CheckBox newCB = createNumbersCheckbox(counter, spotButtonsHolder, numbers, drawBtn);
+                        newCB.setSelected(true);
+
+                        numbers.add(newCB, j, i);
+                    }
+                    counter++;
+                }
+            }
+            numbers.setDisable(true);
+            quickPickButton.setDisable(true);
+            drawBtn.setDisable(false);
+        });
     }
 
     public void getDrawBtn(Text showDrawStatus, HBox spotButtonsHolder, GridPane numbers, Button drawBtn) {
@@ -144,19 +178,24 @@ public class GameScreen {
             DrawRandom dr = new DrawRandom(80, 20, 1);
             TreeSet<Integer> draws = dr.draw();
 
+            ArrayList<Integer> userPicks = this.pick.getNumbers();
+            ArrayList<Integer> wonPicks = new ArrayList<>();
+            for (int pick : userPicks) {
+                if (draws.contains(pick))
+                    wonPicks.add(pick);
+            }
+            showDrawStatus.setFill(Color.rgb(212, 62, 62));
+            showDrawStatus.setText(Integer.toString(wonPicks.size()) + " won!");
+            renderPlayAgainBtn();
+
+            System.out.println("\nUser picked:");
+            System.out.println(userPicks);
+
             System.out.println("\nComputer is drawing....");
             System.out.println(draws.toString());
 
-            int matched = 0;
-            ArrayList<Integer> userPick = this.pick.getNumbers();
-            for (int pick : userPick) {
-                if (draws.contains(pick))
-                    matched++;
-            }
-            showDrawStatus.setFill(Color.rgb(212, 62, 62));
-            showDrawStatus.setText(Integer.toString(matched) + " were matched!");
-            renderPlayAgainBtn();
-
+            System.out.println("\nPicks won:");
+            System.out.println(wonPicks.toString());
 
             // Render draw animation
             int counter = 1;
@@ -200,6 +239,7 @@ public class GameScreen {
 
             if (this.pick.getNumbers().size() >= this.pick.getSpots()) {
                 grid.setDisable(true);
+                quickPickButton.setDisable(true);
                 spotButtonsHolder.setDisable(false);
                 drawBtn.setDisable(false);
             }

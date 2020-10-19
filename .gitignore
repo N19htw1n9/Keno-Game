@@ -3,4 +3,5 @@ target/*
 .vscode
 .settings
 .classpath
+.project
 CS342_Project2_Fall2020_final(2).pdf
