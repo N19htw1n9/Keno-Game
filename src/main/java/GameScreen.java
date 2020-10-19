@@ -22,13 +22,23 @@ public class GameScreen {
     private Text text;
     private UserPick pick;
     private int matches;
+    private int currentMatch;
+    private boolean matcheSet;
     private Button quickPickButton;
+    private Button nextMatchButton;
+    private int won;
+    private HBox matchButtonsHolder;
 
     public GameScreen(Stage primaryStage) {
         this.primaryStage = primaryStage;
         this.pick = new UserPick();
         this.content = new VBox();
         this.text = new Text();
+        this.matches = 1;
+        this.currentMatch = 1;
+        this.matcheSet = false;
+        this.nextMatchButton = new Button("Next match");
+        this.matchButtonsHolder = new HBox();
 
         createScene();
     }
@@ -52,6 +62,8 @@ public class GameScreen {
             radioBtn.setOnMouseClicked(e -> {
                 spotButtonsHolder.setDisable(false);
                 this.matches = val;
+                this.createNextMatchButton();
+                this.matcheSet = true;
             });
             matches.add(radioBtn);
             radioBtn.setToggleGroup(matchButtonsGroup);
@@ -77,8 +89,38 @@ public class GameScreen {
         return spots;
     }
 
+    public void createNextMatchButton() {
+        if (this.currentMatch < this.matches)
+            this.nextMatchButton.setText("Next match");
+        else
+            this.nextMatchButton.setText("Play again");
+
+        if (this.matcheSet)
+            this.matchButtonsHolder.setDisable(true);
+        else
+            this.matchButtonsHolder.setDisable(false);
+
+        this.nextMatchButton.setOnAction(e -> {
+            if (this.currentMatch < this.matches) {
+                this.currentMatch++;
+                this.pick = new UserPick();
+                this.createScene();
+                this.primaryStage.setScene(this.scene);
+            } else {
+                this.pick = new UserPick();
+                this.won = 0;
+                this.matches = 1;
+                this.currentMatch = 1;
+                this.matcheSet = false;
+                this.createScene();
+                this.primaryStage.setScene(this.scene);
+            }
+        });
+    }
+
     public void createContentVBox() {
         this.content = new VBox(20);
+        createNextMatchButton();
 
         // Create grid
         GridPane numbers = new GridPane();
@@ -95,7 +137,8 @@ public class GameScreen {
 
         HBox spotButtonsHolder = new HBox();
         spotButtonsHolder.setSpacing(25);
-        spotButtonsHolder.setDisable(true);
+        if (!this.matcheSet)
+            spotButtonsHolder.setDisable(true);
 
         // Add all spot buttons to spotsHolder Horizontal box
         for (RadioButton spot : spotButtons)
@@ -105,8 +148,12 @@ public class GameScreen {
         ToggleGroup matchButtonGroup = new ToggleGroup();
         ArrayList<RadioButton> matchButtons = this.createMatchButtons(matchButtonGroup, spotButtonsHolder);
 
-        HBox matchButtonsHolder = new HBox();
+        this.matchButtonsHolder = new HBox();
         matchButtonsHolder.setSpacing(25);
+        if (this.matcheSet)
+            this.matchButtonsHolder.setDisable(true);
+        else
+            this.matchButtonsHolder.setDisable(false);
 
         // Add all match buttons to matchButtonHolder Horizontal box
         for (RadioButton matchButton : matchButtons)
@@ -127,7 +174,7 @@ public class GameScreen {
                 matchButtonsHolder,
                 new Text("\n2. How many numbers (spots) do you want to play?"), spotButtonsHolder,
                 new Text("\n3. Pick your own numbers, OR select with Quick Pick."), numbers, quickPickButton, drawBtn,
-                drawStatus);
+                drawStatus, this.nextMatchButton);
         this.content.setPadding(new Insets(0, 20, 20, 20));
     }
 
@@ -188,21 +235,10 @@ public class GameScreen {
                 }
             }
 
+            this.won += wonPicks.size();
             showDrawStatus.setFill(Color.rgb(212, 62, 62));
             showDrawStatus.setText(Integer.toString(wonPicks.size()) + " won!");
-            renderPlayAgainBtn();
         });
-    }
-
-    public void renderPlayAgainBtn() {
-        Button playAgain = new Button("Play again");
-        playAgain.setOnAction(e -> {
-            this.pick = new UserPick();
-            this.createScene();
-            this.primaryStage.setScene(this.scene);
-        });
-
-        this.content.getChildren().add(playAgain);
     }
 
     public CheckBox createNumbersCheckbox(final int counter, HBox spotButtonsHolder, GridPane grid, Button drawBtn) {
