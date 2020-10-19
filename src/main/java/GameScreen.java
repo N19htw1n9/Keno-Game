@@ -137,14 +137,13 @@ public class GameScreen {
             ArrayList<Integer> userPicks = pick.getNumbers();
 
             int counter = 1;
+            numbers.getChildren().clear();
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 10; j++) {
-                    if (userPicks.contains(counter)) {
-                        CheckBox newCB = createNumbersCheckbox(counter, spotButtonsHolder, numbers, drawBtn);
+                    CheckBox newCB = new CheckBox(Integer.toString(counter));
+                    if (userPicks.contains(counter))
                         newCB.setSelected(true);
-
-                        numbers.add(newCB, j, i);
-                    }
+                    numbers.add(newCB, j, i);
                     counter++;
                 }
             }
