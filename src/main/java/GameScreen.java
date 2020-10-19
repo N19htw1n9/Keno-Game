@@ -38,14 +38,8 @@ public class GameScreen {
         this.createContentVBox();
 
         this.scene = new Scene(
-                new VBox(
-                        20,
-                        MainMenuBar.getGameMainMenuBar(this.primaryStage, this.text, this.content),
-                        this.content
-                ),
-                800,
-                800
-        );
+                new VBox(20, MainMenuBar.getGameMainMenuBar(this.primaryStage, this.text, this.content), this.content),
+                800, 800);
     }
 
     public ArrayList<RadioButton> createMatchButtons(ToggleGroup matchButtonsGroup, HBox spotButtonsHolder) {
@@ -133,21 +127,12 @@ public class GameScreen {
         quickPickButton.setDisable(true);
 
         // Add children
-        this.content.getChildren().addAll(
-                this.text,
-                gameText,
-                matchButtonsHolder,
-                spotButtonsHolder,
-                numbers,
-                quickPickButton,
-                drawBtn,
-                drawStatus
-        );
+        this.content.getChildren().addAll(this.text, gameText, matchButtonsHolder, spotButtonsHolder, numbers,
+                quickPickButton, drawBtn, drawStatus);
         this.content.setPadding(new Insets(0, 20, 0, 20));
     }
 
-    public void createQuickPickButton(HBox spotButtonsHolder, GridPane numbers,
-            Button drawBtn) {
+    public void createQuickPickButton(HBox spotButtonsHolder, GridPane numbers, Button drawBtn) {
         quickPickButton.setOnAction(e -> {
             pick.randomPick();
             ArrayList<Integer> userPicks = pick.getNumbers();
@@ -179,37 +164,43 @@ public class GameScreen {
 
             ArrayList<Integer> userPicks = this.pick.getNumbers();
             ArrayList<Integer> wonPicks = new ArrayList<>();
-            for (int pick : userPicks) {
-                if (draws.contains(pick))
-                    wonPicks.add(pick);
-            }
-            showDrawStatus.setFill(Color.rgb(212, 62, 62));
-            showDrawStatus.setText(Integer.toString(wonPicks.size()) + " won!");
-            renderPlayAgainBtn();
-
-            System.out.println("\nUser picked:");
-            System.out.println(userPicks);
-
-            System.out.println("\nComputer is drawing....");
-            System.out.println(draws.toString());
-
-            System.out.println("\nPicks won:");
-            System.out.println(wonPicks.toString());
 
             // Render draw animation
             int counter = 1;
             numbers.setDisable(false);
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 10; j++) {
-                    if (draws.contains(counter)) {
+                    boolean inDraws = draws.contains(counter);
+                    boolean inUserPicks = userPicks.contains(counter);
+
+                    if (inDraws && inUserPicks) {
+                        CheckBox newCB = createNumbersCheckbox(counter, spotButtonsHolder, numbers, drawBtn);
+                        newCB.setSelected(true);
+                        newCB.setTextFill(Color.GREEN);
+                        newCB.setStyle("selected-box-color: lime; box-color: red; mark-color: blue;");
+
+                        numbers.add(newCB, j, i);
+                        wonPicks.add(counter);
+                    } else if (inDraws) {
                         CheckBox newCB = createNumbersCheckbox(counter, spotButtonsHolder, numbers, drawBtn);
                         newCB.setSelected(true);
 
                         numbers.add(newCB, j, i);
+                    } else if (inUserPicks) {
+                        CheckBox newCB = createNumbersCheckbox(counter, spotButtonsHolder, numbers, drawBtn);
+                        newCB.setSelected(true);
+                        newCB.setTextFill(Color.RED);
+
+                        numbers.add(newCB, j, i);
                     }
+
                     counter++;
                 }
             }
+
+            showDrawStatus.setFill(Color.rgb(212, 62, 62));
+            showDrawStatus.setText(Integer.toString(wonPicks.size()) + " won!");
+            renderPlayAgainBtn();
         });
     }
 
