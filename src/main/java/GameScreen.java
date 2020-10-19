@@ -11,6 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.TreeSet;
@@ -20,7 +21,7 @@ public class GameScreen {
     private Stage primaryStage;
     private Scene scene;
     private VBox content;
-    private TextArea textBox;
+    private Text text;
     private UserPick pick;
     private int matches;
 
@@ -28,7 +29,7 @@ public class GameScreen {
         this.primaryStage = primaryStage;
         this.pick = new UserPick();
         this.content = new VBox();
-        this.textBox = new TextArea();
+        this.text = new Text();
 
         createScene();
     }
@@ -39,7 +40,7 @@ public class GameScreen {
         this.scene = new Scene(
                 new VBox(
                         20,
-                        MainMenuBar.getMainMenuBar(this.primaryStage, this.textBox),
+                        MainMenuBar.getGameMainMenuBar(this.primaryStage, this.text, this.content),
                         this.content
                 ),
                 800,
@@ -125,7 +126,7 @@ public class GameScreen {
 
         // Add children
         this.content.getChildren().addAll(
-                this.textBox,
+                this.text,
                 gameText,
                 matchButtonsHolder,
                 spotButtonsHolder,
@@ -215,7 +216,6 @@ public class GameScreen {
         for (int x = 0; x < 8; x++) {
             for (int i = 0; i < 10; i++) {
                 CheckBox cb = createNumbersCheckbox(counter, spotButtonsHolder, grid, drawBtn);
-
                 grid.add(cb, i, x);
                 counter++;
             }

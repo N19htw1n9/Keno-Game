@@ -8,7 +8,8 @@ import javafx.stage.Stage;
 import javafx.scene.text.*;
 
 public class Welcome extends Application {
-    private TextArea textBox; //Changed from TextField to TextArea for larger text
+    private Text text; //Changed from TextField to TextArea for larger text
+    public static Scene welcomeScreen;
 
     public static void main(String[] args)
     {
@@ -26,24 +27,24 @@ public class Welcome extends Application {
         Button playGame = new Button("Play game");
         playGame.setOnAction(e -> primaryStage.setScene(new GameScreen(primaryStage).getScene()));
 
-        textBox = new TextArea();
+        text = new Text();
 
         VBox content = new VBox(
                 20,
                 message,
                 playGame,
-                textBox //Unsure of how to hide the textbox until a menu item has been selected
+                text //Unsure of how to hide the textbox until a menu item has been selected
         );
         content.setPadding(new Insets(0, 20, 0, 20));
 
         Scene welcomeScreen = new Scene(
                 new VBox(
                         20,
-                        MainMenuBar.getMainMenuBar(primaryStage, textBox),
+                        MainMenuBar.getMainMenuBar(primaryStage, text),
                         content
                 ),
-                1050,
-                950
+                700,
+                500
         );
         primaryStage.setScene(welcomeScreen); //set the scene in the stage
         primaryStage.show(); //make visible to the user

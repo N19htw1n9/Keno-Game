@@ -1,17 +1,13 @@
 - Fill in a KENO play slip with the number of spots (numbers) you want to play per game.  Choose from 1 to 10 spots.
 
-- Choose how much you want to wager on each game:  $1, $2, $3, $4, $5, $10 or $20.  Wager more, win more!
-
 - Select how many games in a row you want to play:  1, 2, 3, 4, 5, 10 or 20.
 
-- Mark your numbers from 1 to 80.  Or, mark "Quick Pick" and let the computer randomly pick your numbers for you.  The number of numbers you pick must equal the number of spots you selected to play.  (Example:  If you select "4 spots" in section 1 of the play slip, select 4 numbers in section 4.)
+- Mark your numbers from 1 to 80.  Or, mark "Quick Pick" and let the computer randomly pick your numbers for you.
+  The number of numbers you pick must equal the number of spots you selected to play.
+  (Example:  If you select "4 spots" in section 1 of the play slip, select 4 numbers in section 4.)
 
-- Remember:  If you chose to purchase a Quick Pick, you must tell the Retailer how many numbers you want for each game, how much you want to spend per game, and how many games you want to play.
+- Remember:  If you chose Quick Pick, you must tell the application how many numbers you want for each game
+  and how many games you want to play.
 
-- Choose the BONUS MULTIPLIER option for a chance to multiply your prize.  The BONUS MULTIPLIER doubles the total ticket cost and multiplies any prize won by the BONUS MULTIPLIER number selected for the game.  The BONUS MULTIPLIER (No Bonus Multiplier, 2, 3, 4, 5, or 10) is randomly selected just before each drawing.  $1,000,000 is the maximum prize per game on any one KENO game ticket with the BONUS MULTIPLIER, regardless of the amount wagered.
-
-- KENO tickets cannot be voided; once printed there is no way to cancel it. Please be sure to check your ticket carefully after purchasing to make sure it is what you requested.
-
-- A win occurs when some or all of your numbers (spots) are matched by the computer.  It is even possible to win a cash prize if none of your numbers are drawn (see 10-spot and 9-spot games).
-
-- To play your numbers again, hand the Lottery Retailer your existing KENO ticket and just say, “REPLAY.”  You will get a new KENO ticket with the same numbers and wager amount.  Your new ticket will have the REPLAY “R” printed on it.
+- A win occurs when some or all of your numbers (spots) are matched by the computer.  It is even possible to win a
+  cash prize if none of your numbers are drawn (see 10-spot and 9-spot games).

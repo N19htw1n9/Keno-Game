@@ -1,0 +1,9 @@
+10 Spot Game: 1 in 9.05		5 Spot Game: 1 in 10.34
+
+9 Spot Game: 1 in 6.53		4 Spot Game: 1 in 3.86
+
+8 Spot Game: 1 in 9.77		3 Spot Game: 1 in 6.55
+
+7 Spot Game: 1 in 4.23		2 Spot Game: 1 in 16.63
+
+6 Spot Game: 1 in 6.19		1 Spot Game: 1 in 4
