@@ -28,6 +28,7 @@ public class GameScreen {
     private Button nextMatchButton;
     private int won;
     private HBox matchButtonsHolder;
+    private Text displayScore;
 
     public GameScreen(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -39,6 +40,7 @@ public class GameScreen {
         this.matcheSet = false;
         this.nextMatchButton = new Button("Next match");
         this.matchButtonsHolder = new HBox();
+        this.displayScore = new Text("Score: 0");
 
         createScene();
     }
@@ -50,7 +52,7 @@ public class GameScreen {
 
         this.scene = new Scene(
                 new VBox(MainMenuBar.getGameMainMenuBar(this.primaryStage, this.text, this.content), scrollContent),
-                660, 750);
+                660, 801);
     }
 
     public ArrayList<RadioButton> createMatchButtons(ToggleGroup matchButtonsGroup, HBox spotButtonsHolder) {
@@ -114,6 +116,7 @@ public class GameScreen {
                 this.matcheSet = false;
                 this.createScene();
                 this.primaryStage.setScene(this.scene);
+                this.displayScore.setText("Score: 0");
             }
         });
     }
@@ -170,7 +173,8 @@ public class GameScreen {
         quickPickButton.setDisable(true);
 
         // Add children
-        this.content.getChildren().addAll(this.text, new Text("1. How many consecutive draws do you want to play?"),
+        this.content.getChildren().addAll(this.text, this.displayScore,
+                new Text("1. How many consecutive draws do you want to play?"),
                 matchButtonsHolder,
                 new Text("\n2. How many numbers (spots) do you want to play?"), spotButtonsHolder,
                 new Text("\n3. Pick your own numbers, OR select with Quick Pick."), numbers, quickPickButton, drawBtn,
@@ -238,6 +242,7 @@ public class GameScreen {
             this.won += wonPicks.size();
             showDrawStatus.setFill(Color.rgb(212, 62, 62));
             showDrawStatus.setText(Integer.toString(wonPicks.size()) + " won!");
+            this.displayScore.setText("Score: " + this.won);
         });
     }
 
