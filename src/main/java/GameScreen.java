@@ -167,31 +167,24 @@ public class GameScreen {
             // Render draw animation
             int counter = 1;
             numbers.setDisable(false);
+            numbers.getChildren().clear();
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 10; j++) {
                     boolean inDraws = draws.contains(counter);
                     boolean inUserPicks = userPicks.contains(counter);
+                    CheckBox newCB = new CheckBox(Integer.toString(counter));
 
                     if (inDraws && inUserPicks) {
-                        CheckBox newCB = createNumbersCheckbox(counter, spotButtonsHolder, numbers, drawBtn);
                         newCB.setSelected(true);
                         newCB.setTextFill(Color.BLUE);
-
-                        numbers.add(newCB, j, i);
                         wonPicks.add(counter);
                     } else if (inDraws) {
-                        CheckBox newCB = createNumbersCheckbox(counter, spotButtonsHolder, numbers, drawBtn);
                         newCB.setSelected(true);
-
-                        numbers.add(newCB, j, i);
                     } else if (inUserPicks) {
-                        CheckBox newCB = createNumbersCheckbox(counter, spotButtonsHolder, numbers, drawBtn);
                         newCB.setSelected(true);
                         newCB.setTextFill(Color.RED);
-
-                        numbers.add(newCB, j, i);
                     }
-
+                    numbers.add(newCB, j, i);
                     counter++;
                 }
             }
