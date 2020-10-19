@@ -11,14 +11,12 @@ public class Welcome extends Application {
     private Text text; //Changed from TextField to TextArea for larger text
     public static Scene welcomeScreen;
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         launch(args);
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception
-    {
+    public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Keno");
 
         Text message = new Text();
