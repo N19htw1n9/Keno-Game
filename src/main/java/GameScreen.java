@@ -2,7 +2,6 @@ import Components.MainMenuBar;
 import Objects.DrawRandom;
 import Objects.UserPick;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
@@ -37,8 +36,10 @@ public class GameScreen {
     public void createScene() {
         this.createContentVBox();
 
+        ScrollPane scrollContent = new ScrollPane(this.content);
+
         this.scene = new Scene(
-                new VBox(20, MainMenuBar.getGameMainMenuBar(this.primaryStage, this.text, this.content), this.content),
+                new VBox(MainMenuBar.getGameMainMenuBar(this.primaryStage, this.text, this.content), scrollContent),
                 660, 800);
     }
 
