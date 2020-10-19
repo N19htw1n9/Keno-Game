@@ -39,7 +39,7 @@ public class GameScreen {
 
         this.scene = new Scene(
                 new VBox(20, MainMenuBar.getGameMainMenuBar(this.primaryStage, this.text, this.content), this.content),
-                800, 800);
+                660, 800);
     }
 
     public ArrayList<RadioButton> createMatchButtons(ToggleGroup matchButtonsGroup, HBox spotButtonsHolder) {
