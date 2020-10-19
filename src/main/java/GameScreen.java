@@ -83,7 +83,6 @@ public class GameScreen {
 
         // Create grid
         GridPane numbers = new GridPane();
-        numbers.setAlignment(Pos.CENTER);
         numbers.setHgap(15);
         numbers.setVgap(15);
         numbers.setDisable(true);
@@ -96,7 +95,6 @@ public class GameScreen {
         ArrayList<RadioButton> spotButtons = this.createSpotsButtons(spotButtonsGroup, numbers, quickPickButton);
 
         HBox spotButtonsHolder = new HBox();
-        spotButtonsHolder.setAlignment(Pos.CENTER);
         spotButtonsHolder.setSpacing(25);
         spotButtonsHolder.setDisable(true);
 
@@ -109,7 +107,6 @@ public class GameScreen {
         ArrayList<RadioButton> matchButtons = this.createMatchButtons(matchButtonGroup, spotButtonsHolder);
 
         HBox matchButtonsHolder = new HBox();
-        matchButtonsHolder.setAlignment(Pos.CENTER);
         matchButtonsHolder.setSpacing(25);
 
         // Add all match buttons to matchButtonHolder Horizontal box
@@ -127,8 +124,11 @@ public class GameScreen {
         quickPickButton.setDisable(true);
 
         // Add children
-        this.content.getChildren().addAll(this.text, gameText, matchButtonsHolder, spotButtonsHolder, numbers,
-                quickPickButton, drawBtn, drawStatus);
+        this.content.getChildren().addAll(this.text, gameText,
+                new Text("\n\n1. How many consecutive draws do you want to play?"), matchButtonsHolder,
+                new Text("\n2. How many numbers (spots) do you want to play?"), spotButtonsHolder,
+                new Text("\n3. Pick your own numbers, OR select with Quick Pick."), numbers, quickPickButton, drawBtn,
+                drawStatus);
         this.content.setPadding(new Insets(0, 20, 0, 20));
     }
 
