@@ -137,7 +137,7 @@ public class MainMenuBar {
         iFour.setOnAction(e ->
         {
             vb.setStyle("-fx-background-color: pink;");
-            text.setFont(Font.font ("Verdana", 12));
+            text.setFont(Font.font ("Cambria", 12));
             text.setFill(Color.rgb(0, 0, 225));
         });
         mOne.getItems().add(iFour); //add menu item to first menu
