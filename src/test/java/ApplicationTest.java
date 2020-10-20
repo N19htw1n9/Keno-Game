@@ -1,28 +1,22 @@
 import Objects.DrawRandom;
 import Objects.UserPick;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.*;
 import java.util.TreeSet;
-import java.util.Iterator;
 
 public class ApplicationTest {
     private DrawRandom rand;
     private UserPick up;
     private UserPick upVar;
 
-    @BeforeAll
-    void init() {
-        rand = new DrawRandom(20, 10, 2);
-    }
-
     @Test
     public void DrawRandomTest() {
+        rand = new DrawRandom(20, 10, 2);
+
         TreeSet<Integer> ts = rand.draw();
-        Iterator<Integer> it = ts.iterator();
 
         assertEquals(ts.size(), 10);
         assertEquals(rand.getMax(), 20);
@@ -37,9 +31,9 @@ public class ApplicationTest {
         assertEquals(rand.getNumDraws(), 3);
         assertEquals(ts.size(), 10);
 
-        while (it.hasNext()) {
-            assertTrue((it.next() >= 1) && (it.next() <= 20));
-            assertTrue((it.next() >= 1) && (it.next() <= 20));
+        for (int val : ts) {
+            assertTrue((val >= 1) && (val <= 20));
+            assertTrue((val >= 1) && (val <= 20));
         }
     }
 
@@ -47,9 +41,9 @@ public class ApplicationTest {
     public void UserPickTest() {
         upVar = new UserPick(3);
         upVar.setNumber(21);
-        assertEquals(upVar.getNumbers().size(), 2);
+        assertEquals(upVar.getNumbers().size(), 1);
         assertEquals(upVar.getNumbers().get(0), 21);
-        assertEquals(upVar.getNumbers().get(0), 12);
+        assertEquals(upVar.getNumbers().get(0), 21);
         assertEquals(upVar.getSpots(), 3);
 
         up = new UserPick();
